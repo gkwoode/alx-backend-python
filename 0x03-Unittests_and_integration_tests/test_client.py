@@ -21,6 +21,8 @@ class TestGithubOrgClient(unittest.TestCase):
     ])
     @patch('client.GithubOrgClient.get_json')
     def test_org(self, org_name, mock_get_json):
+        """summary"""
+
         # Set the expected return value of get_json
         expected_return_value = {"login": org_name}
 
@@ -43,6 +45,8 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @patch('client.GithubOrgClient.org', new_callable=property)
     def test_public_repos_url(self, mock_org):
+        """summary"""
+
         # Set the expected org payload
         expected_payload = {
                 "repos_url": "https://api.github.com/orgs/example/repos"}
@@ -62,6 +66,8 @@ class TestGithubOrgClient(unittest.TestCase):
     @patch('client.GithubOrgClient.get_json')
     @patch('client.GithubOrgClient._public_repos_url', new_callable=property)
     def test_public_repos(self, mock_public_repos_url, mock_get_json):
+        """summary"""
+
         # Set the expected repos payload
         expected_payload = [
             {"name": "repo1"},
@@ -98,6 +104,8 @@ class TestGithubOrgClient(unittest.TestCase):
         ({"license": {"key": "other_license"}}, "my_license", False)
     ])
     def test_has_license(self, repo, license_key, expected_result):
+        """summary"""
+
         # Set the return value for GithubOrgClient.public_repos
         with patch('client.GithubOrgClient.public_repos') as mock_public_repos:
             mock_public_repos.return_value = [repo]
@@ -122,6 +130,8 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        """summary"""
+
         # Patch requests.get and mock the JSON responses
         cls.get_patcher = patch('requests.get')
         cls.mock_get = cls.get_patcher.start()
@@ -134,14 +144,20 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
+        """summary"""
+
         # Stop the patcher
         cls.get_patcher.stop()
 
     def setUp(self):
+        """summary"""
+
         # Create a GithubOrgClient instance with any org_name (example)
         self.github_org_client = GithubOrgClient("example")
 
     def test_public_repos(self):
+        """summary"""
+
         # Set the return value for requests.get(url).json()
         self.mock_get.side_effect = [
             self.org_payload,  # Mock for GithubOrgClient.org
@@ -160,6 +176,8 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
         self.assertEqual(repos, self.expected_repos)
 
     def test_public_repos_with_license(self):
+        """summary"""
+
         # Set the return value for requests.get(url).json()
         self.mock_get.side_effect = [
             self.org_payload,  # Mock for GithubOrgClient.org
